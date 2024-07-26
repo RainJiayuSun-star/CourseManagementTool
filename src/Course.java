@@ -61,4 +61,28 @@ public class Course {
         return courseNumber + " " + courseTitle + "(" + creditHours + ") \n    " + courseLevel + "\n    "+
                 courseDescription ;
     }
+
+    /**
+     * Determine if another object is equal to a Course
+     *
+     * @param other - the object to check is equal to the Course
+     * @return true if other is a Course and has the same courseNumber or same courseTitle, false otherwise
+     */
+    @Override
+    public boolean equals(Object other) {
+        if (other instanceof Course) {
+            Course otherCourse = (Course) other;
+            return this.courseNumber == otherCourse.courseNumber || this.courseTitle.equals(otherCourse.courseTitle);
+        }
+        return false;
+    }
+
+    /**
+     * This compare method solely based on course number
+     * @param otherCourse - the other Course to compare
+     * @return true if their course number are the same
+     */
+    public int compare(Course otherCourse) {
+        return Integer.compare(this.courseNumber, otherCourse.courseNumber);
+    }
 }

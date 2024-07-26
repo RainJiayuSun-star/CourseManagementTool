@@ -117,18 +117,98 @@ public class MyCourseList implements ListADT<Course>{
         this.add(0, newElement);
     }
 
+    /**
+     * Returns the element at the specified position in the list
+     *
+     * @param index - index of the element to return
+     * @return - the element at the specified position in the list
+     * @throws IndexOutOfBoundsException - if the index is out of range
+     */
     @Override
     public Course get(int index) {
-        return null;
+        // Ensure that the index is within range
+        if (index < 0 || index >= size){
+            throw new IndexOutOfBoundsException();
+        }
+        // Traverse to the requested index
+        LinkedNode<Course> current = head;
+        for (int i = 0; i < index; i++){
+            current = current.getNext();
+        }
+        return current.getData();
     }
 
+    /**
+     * Returns true if the list contains the specified element toFind. More formally, returns true if and only if the
+     * list contains at least one element e such that toFind.equals(e) == true.
+     *
+     * @param toFind toFind element to find
+     * @return true if the list contains at least one match with toFind
+     */
     @Override
     public boolean contains(Course toFind) {
+        LinkedNode<Course> current = head;
+        while (current != null) {
+            if (current.getData().equals(toFind)) {
+                return true;
+            }
+            current = current.getNext();
+        }
         return false;
     }
 
+    /**
+     * Removes the element at the specified position in the list
+     *
+     * @param index - the index of the element to be removed
+     * @return - the element that was removed from the list
+     * @throws IndexOutOfBoundsException - if the index is out of range
+     */
     @Override
     public Course remove(int index) {
-        return null;
+        if (index < 0 || index >= size){
+            throw new IndexOutOfBoundsException();
+        }
+        LinkedNode<Course> current = head; // Initialize the current node
+        for (int i = 0; i < index; i++) { // Traverse to the index prepare to remove
+            current = current.getNext();
+        }
+
+        if (current == head) { // If the current node is the head
+            head = head.getNext();
+            if (head != null) {
+                head.setPrev(null);
+            } else {
+                tail = null;
+            }
+        } else if (current == tail) { // If the current node is the tail
+            tail = tail.getPrev();
+            tail.setNext(null);
+        } else { // If the current node is between head and tail
+            current.getPrev().setNext(current.getNext());
+            current.getNext().setPrev(current.getPrev());
+        }
+        size--;
+        return current.getData();
+    }
+
+    /**
+     * Returns a String representation of the contents of this list traversed in the forward direction separated by a
+     * newline
+     *
+     * @return a String representation of the connected nodes making this linked list traversed starting from the head
+     * of the list
+     */
+    protected String traverseForward() {
+        StringBuilder sb = new StringBuilder();
+        LinkedNode<Course> current = head;
+        while (current != null) {
+            sb.append(current.getData().toString());
+            if (current.getNext() != null) {
+                sb.append("\n");
+            }
+            current = current.getNext();
+        }
+        return sb.toString();
     }
 }
